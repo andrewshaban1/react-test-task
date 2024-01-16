@@ -1,16 +1,17 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-import { useUserDispatch, useUserSelector } from '../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { getUsersFromAPI } from '../services/api-client';
 import { deleteUser, filterUsers, setUsers } from '../redux/user-slice';
 import List from './List';
 import { User } from '../types/user.type';
+import { logout } from '../redux/auth-slice';
 
-const FilterableList = () => {
+const FilterableListPage = () => {
   const [searchText, setSearchText] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { users } = useUserSelector((state) => state.user);
+  const { users } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     getUsersFromAPI()
@@ -26,7 +27,7 @@ const FilterableList = () => {
     const regex = new RegExp(searchText, 'gi');
     return text.replace(
       regex,
-      (match) => `<span style="background-color: yellow">${match}</span>`
+      (match) => `<span class="highlight">${match}</span>`
     );
   };
 
@@ -39,7 +40,7 @@ const FilterableList = () => {
     dispatch(filterUsers(matchedUsers));
   };
 
-  const dispatch = useUserDispatch();
+  const dispatch = useAppDispatch();
 
   const handleResent = () => {
     getUsersFromAPI()
@@ -57,28 +58,39 @@ const FilterableList = () => {
     setSearchText(e.target.value);
   };
 
+  const handleLogOut = () => {
+    dispatch(logout());
+  };
+
   return (
-    <div className='flexContainer'>
-      <div>
-        <input
-          className='inputField'
-          ref={inputRef}
-          onChange={(e) => handleSearch(e)}
-        />
-        <button className='button' onClick={handleFilter}>
-          Filter
+    <>
+      <div className='header'>
+        <button className='button' onClick={handleLogOut}>
+          Log Out
         </button>
       </div>
-      <button className='button' onClick={handleResent}>
-        Reset
-      </button>
-      <List
-        handleDeleteUser={handleDeleteUser}
-        users={users}
-        highlightText={highlightText}
-      />
-    </div>
+      <div className='flexContainer'>
+        <div>
+          <input
+            className='inputField'
+            ref={inputRef}
+            onChange={(e) => handleSearch(e)}
+          />
+          <button className='button' onClick={handleFilter}>
+            Filter
+          </button>
+        </div>
+        <button className='button' onClick={handleResent}>
+          Reset
+        </button>
+        <List
+          handleDeleteUser={handleDeleteUser}
+          users={users}
+          highlightText={highlightText}
+        />
+      </div>
+    </>
   );
 };
 
-export default FilterableList;
+export default FilterableListPage;

@@ -1,4 +1,6 @@
 $screen-sm: 576px;
+$desktop-font-size: 1rem;
+$mobile-font-size: 1.5rem;
 
 @mixin media-min($width) {
   @media screen and (min-width: $width) {
@@ -28,21 +30,30 @@ $screen-sm: 576px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    font-size: 1rem;
+    font-size: $desktop-font-size;
   }
   @include media-max($screen-sm) {
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    font-size: $mobile-font-size;
   }
   &:hover {
     background-color: lighten(red, 40%);
   }
 }
 
+.modal {
+  @include media-min($screen-sm) {
+    font-size: $desktop-font-size;
+  }
+  @include media-max($screen-sm) {
+    font-size: $mobile-font-size;
+  }
+}
+
 .button,
 .inputField {
   @include media-max($screen-sm) {
-    font-size: 1.5rem;
+    font-size: $mobile-font-size;
   }
 }
 
@@ -51,5 +62,15 @@ $screen-sm: 576px;
   &:hover {
     color: white;
     background-color: red;
+  }
+}
+
+.highlight {
+  background-color: yellow;
+}
+
+.header {
+  @include media-max($screen-sm) {
+    margin-bottom: 1rem;
   }
 }

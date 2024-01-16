@@ -6,10 +6,10 @@ import {
 import { AppDispatch, RootState } from '../redux/store';
 
 /**
- * Custom useDispatch hook for type safety
+ * Custom useDispatch and useSelector hooks for type safety
  */
 
 type DispatchFunction = () => AppDispatch;
 
-export const useUserDispatch: DispatchFunction = useDispatch;
-export const useUserSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppDispatch: DispatchFunction = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
